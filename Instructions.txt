@@ -1,0 +1,42 @@
+Step1: conda create --name venv
+Step2: conda activate venv
+
+Step3: git clone https://github.com/WongKinYiu/yolov7
+Step4: cd yolov7
+Step5: git checkout 44f30af0daccb1a3baecc5d80eae22948516c579
+
+Step6: cd seg
+Step7: pip install -r requirements.txt
+
+Step8: curl https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7-seg.pt -O yolov7-seg.pt (PowerShell Command)
+
+Step9(Optional): curl 'https://docs.google.com/uc?export=download&id=1sPYHUcIW48sJ67kh5MHOI3GfoXlYNOfJ' -O dog.jpeg
+
+Step10: python segment/predict.py --weights yolov7-seg.pt --source dog.jpeg --name coco
+
+
+Step11: Download dataset from roboflow
+--------------------------------------------------------------
+!pip install roboflow --quiet
+
+from roboflow import Roboflow
+
+rf = Roboflow(api_key=api_key)
+project = rf.workspace("university-bswxt").project("crack-bphdr")
+dataset = project.version(2).download("yolov7")
+-------------------------------------------------------------------
+
+Step12: https://developer.nvidia.com/cuda-downloads?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local
+Step13: conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+
+# check cuda available
+torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Run on GPU (device 0)
+Step14: python segment/predict.py --weights yolov7-seg.pt --source dog.jpeg --name coco --device 0
+
+# Run on CPU (device cpu)
+Step15: python segment/predict.py --weights yolov7-seg.pt --source dog.jpeg --name coco --device cpu
+
+# For videos run
+python segment/predict.py --weights yolov7-seg.pt --source istockphoto-1305339672-640_adpp_is.mp4 --name videos
